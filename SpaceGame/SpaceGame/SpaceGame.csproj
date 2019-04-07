@@ -67,6 +67,7 @@
   <ItemGroup>
     <BundleResource Include="GameScene.sks" />
     <BundleResource Include="Spaceship.png" />
+    <BundleResource Include="playerStartSprite.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -79,6 +80,15 @@
       <DependentUpon>AppDelegate.cs</DependentUpon>
     </Compile>
     <Compile Include="GameScene.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="EmptyEnumeration.cs" />
+    <Compile Include="LaserBullet.cs" />
+    <Compile Include="IGameObject.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="IBullet.cs" />
+    <Compile Include="GameUnit.cs" />
+    <Compile Include="GameController.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
