@@ -21,9 +21,17 @@ namespace SpaceGame
       PhysicsWorld.Gravity = new CGVector(0, 0);
     }
 
-    public override void MouseDown(NSEvent theEvent)
+    //public override void MouseDown(NSEvent theEvent)
+    //{
+    //  GC.RotatePlayer(theEvent.LocationInNode(this));
+    //}
+
+
+    public override void MouseDragged(NSEvent theEvent)
     {
+      GC.RotatePlayer(theEvent.LocationInNode(this));
     }
+
 
     public override void Update(double currentTime)
     {
