@@ -22,7 +22,7 @@ namespace SpaceGame
 
       MyGameView.ShowsFPS = true;
       MyGameView.ShowsNodeCount = true;
-      //MyGameView.ShowsPhysics = false;
+      MyGameView.ShowsPhysics = true;
     }
 
     public override bool ApplicationShouldTerminateAfterLastWindowClosed(NSApplication sender)

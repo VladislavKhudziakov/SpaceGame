@@ -2,7 +2,6 @@
 
 using AppKit;
 using SpriteKit;
-using Foundation;
 using CoreGraphics;
 
 namespace SpaceGame
@@ -26,6 +25,11 @@ namespace SpaceGame
     public override void KeyDown(NSEvent theEvent)
     {
       GC.OnSceneKeyDown(theEvent);
+    }
+
+    public override void KeyUp(NSEvent theEvent)
+    {
+      GC.OnSceneKeyUp(theEvent);
     }
 
 
