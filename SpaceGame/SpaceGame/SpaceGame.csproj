@@ -89,6 +89,7 @@
     <Compile Include="IBullet.cs" />
     <Compile Include="GameUnit.cs" />
     <Compile Include="GameController.cs" />
+    <Compile Include="GMath.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

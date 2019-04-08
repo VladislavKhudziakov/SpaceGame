@@ -17,24 +17,27 @@ namespace SpaceGame
 
     public override void DidMoveToView(SKView view)
     {
-      GC = new GameController(this);
       PhysicsWorld.Gravity = new CGVector(0, 0);
+      GC = new GameController(this);
+      GC.SpawnPlayer();
     }
 
-    //public override void MouseDown(NSEvent theEvent)
-    //{
-    //  GC.RotatePlayer(theEvent.LocationInNode(this));
-    //}
+
+    public override void KeyDown(NSEvent theEvent)
+    {
+      GC.OnSceneKeyDown(theEvent);
+    }
 
 
     public override void MouseDragged(NSEvent theEvent)
     {
-      GC.RotatePlayer(theEvent.LocationInNode(this));
+      GC.OnSceneMouseDrag(theEvent);
     }
 
 
     public override void Update(double currentTime)
     {
+      GC.OnSceneUpdate(currentTime);
     }
   }
 }
