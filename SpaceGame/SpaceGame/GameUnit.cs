@@ -17,6 +17,8 @@ namespace SpaceGame
       {
         _node.PhysicsBody.ContactTestBitMask = (uint)GameObjects.player;
       }
+
+      _node.PhysicsBody.CollisionBitMask = (uint)GameObjects.none;
     }
   }
 }

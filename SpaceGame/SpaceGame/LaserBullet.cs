@@ -4,7 +4,8 @@ namespace SpaceGame
 {
   public class LaserBullet : Bullet
   { 
-    public LaserBullet(string imgName, GameObjects type) : base(imgName, type)
+    public LaserBullet(double dmg, string imgName, GameObjects type) 
+      : base(dmg, imgName, type)
     {
       _node.PhysicsBody = SKPhysicsBody.CreateRectangularBody(_node.Size);
       _node.PhysicsBody.CategoryBitMask = (uint)type;

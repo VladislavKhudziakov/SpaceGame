@@ -68,6 +68,7 @@
     <BundleResource Include="GameScene.sks" />
     <BundleResource Include="Spaceship.png" />
     <BundleResource Include="playerStartSprite.png" />
+    <BundleResource Include="purpleLaser.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -91,6 +92,12 @@
     <Compile Include="GameController.cs" />
     <Compile Include="GMath.cs" />
     <Compile Include="GameKeyCodes.cs" />
+    <Compile Include="Mat3.cs" />
+    <Compile Include="Weapon.cs" />
+    <Compile Include="PurpleLaser.cs" />
+    <Compile Include="IWeapon.cs" />
+    <Compile Include="PlayerWeapon.cs" />
+    <Compile Include="CollisionDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

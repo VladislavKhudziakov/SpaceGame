@@ -10,13 +10,15 @@ namespace SpaceGame
   {
 
     GameController GC;
-    public GameScene(IntPtr handle) : base(handle)
-    {
-    }
+    public GameScene(IntPtr handle) : base(handle) { }
+
 
     public override void DidMoveToView(SKView view)
     {
       PhysicsWorld.Gravity = new CGVector(0, 0);
+      var colDelegate = new CollisionDelegate();
+      colDelegate.Callbacks += (contact) => { }; 
+      PhysicsWorld.ContactDelegate = colDelegate;
       GC = new GameController(this);
       GC.SpawnPlayer();
     }
@@ -26,6 +28,7 @@ namespace SpaceGame
     {
       GC.OnSceneKeyDown(theEvent);
     }
+
 
     public override void KeyUp(NSEvent theEvent)
     {
