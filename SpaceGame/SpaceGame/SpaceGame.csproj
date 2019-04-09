@@ -98,6 +98,7 @@
     <Compile Include="IWeapon.cs" />
     <Compile Include="PlayerWeapon.cs" />
     <Compile Include="CollisionDelegate.cs" />
+    <Compile Include="Enemy.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

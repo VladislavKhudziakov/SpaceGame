@@ -23,15 +23,7 @@ namespace SpaceGame
 
     public void SpawnPlayer()
     {
-      _player = new Player("playerStartSprite.png")
-      {
-        LookDirection = GMath.Normalize(new CGPoint(_scene.Size.Width, 0))
-      };
-
-      Player.Position = new CGPoint(
-        Player.Size.Width * 1.5, _scene.Size.Height * 0.5);
-
-      _scene.AddChild(Player);
+      _player = new Player(_scene, "playerStartSprite.png");
     }
 
 
