@@ -21,5 +21,11 @@ namespace SpaceGame
     {
       return vector1.X * vector2.X + vector1.Y * vector2.Y;
     }
+
+
+    public static double GenerateRandomInRange(double min, double max)
+    {
+      return min + new Random().NextDouble() * (max - min);
+    }
   }
 }

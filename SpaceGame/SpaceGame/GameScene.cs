@@ -16,11 +16,11 @@ namespace SpaceGame
     public override void DidMoveToView(SKView view)
     {
       PhysicsWorld.Gravity = new CGVector(0, 0);
-      var colDelegate = new CollisionDelegate();
-      colDelegate.Callbacks += (contact) => { }; 
-      PhysicsWorld.ContactDelegate = colDelegate;
       GC = new GameController(this);
       GC.SpawnPlayer();
+      var colDelegate = new CollisionDelegate();
+      colDelegate.Callbacks += NodesCollided;
+      PhysicsWorld.ContactDelegate = colDelegate;
     }
 
 
@@ -45,6 +45,12 @@ namespace SpaceGame
     public override void Update(double currentTime)
     {
       GC.OnSceneUpdate(currentTime);
+    }
+
+
+    private void NodesCollided(SKPhysicsContact contact)
+    {
+      GC.OnNodesCollision(contact);
     }
   }
 }

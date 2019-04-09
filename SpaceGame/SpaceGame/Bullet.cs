@@ -10,7 +10,8 @@ namespace SpaceGame
     public double DMG { get => _dmg; }
 
 
-    protected Bullet(double dmg, string imgName, GameObjects type) : base(imgName)
+    protected Bullet(double dmg, string imgName, GameObjects type) 
+      : base(imgName)
     {
       _type = type;
       _dmg = dmg;

@@ -9,21 +9,35 @@ namespace SpaceGame
   public class GameController
   {
     private Player _player;
-    private readonly SKScene _scene;
-    private List<ushort> pressedKeys;
+    private readonly List<ushort> pressedKeys;
 
     public SKSpriteNode Player { get => _player.Node; set => _player.Node = value; }
+    public List<GameUnit> SceneGameUnits { get; }
+    public List<Bullet> BulletsInScene { get; set; }
+    public SKScene Scene { get; }
+
 
     public GameController(SKScene scene)
     {
-      _scene = scene;
+      Scene = scene;
+      SceneGameUnits = new List<GameUnit>();
+      BulletsInScene = new List<Bullet>();
       pressedKeys = new List<ushort>();
+
     }
 
 
     public void SpawnPlayer()
     {
-      _player = new Player(_scene, "playerStartSprite.png");
+      _player = new Player(this, "playerStartSprite.png");
+      SceneGameUnits.Add(_player);
+      SpawnEnemy();
+      SpawnEnemy();
+      SpawnEnemy();
+      SpawnEnemy();
+      SpawnEnemy();
+      SpawnEnemy();
+      SpawnEnemy();
     }
 
 
@@ -64,7 +78,6 @@ namespace SpaceGame
           pressedKeys.Add(theEvent.KeyCode);
         }
       }
-
     }
 
 
@@ -79,7 +92,77 @@ namespace SpaceGame
 
     public void OnSceneMouseDrag(NSEvent theEvent)
     {
-      RotatePlayer(theEvent.LocationInNode(_scene));
+      RotatePlayer(theEvent.LocationInNode(Scene));
+    }
+
+
+    public void OnNodesCollision(SKPhysicsContact contact)
+    {
+
+      if (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet ||
+          contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet ||
+          contact.BodyA.CategoryBitMask ==(uint)GameObjects.playerBullet ||
+          contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet )
+      {
+        OnBulletCollision(contact);
+      }
+    }
+
+
+    public void SpawnEnemy()
+    {
+      var enemy = new BaseEnemy(this);
+      enemy.Spawn();
+      enemy.ShootOnce();
+      SceneGameUnits.Add(enemy);
+    }
+
+
+    private void OnBulletCollision(SKPhysicsContact contact)
+    {
+      bool isDifferentTypes =
+          contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
+          !(contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+          contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet) &&
+          !(contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
+          contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet);
+
+      if (isDifferentTypes)
+      {
+        SKPhysicsBody bulletBody;
+        SKPhysicsBody otherBody;
+
+        if (contact.BodyA.CategoryBitMask == (uint)GameObjects.playerBullet ||
+          contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet)
+        {
+          bulletBody = contact.BodyA;
+          otherBody = contact.BodyB;
+        }
+        else
+        {
+          bulletBody = contact.BodyB;
+          otherBody = contact.BodyA;
+        }
+
+        var bulletObject = BulletsInScene.Find(
+          (obj) => obj.ID.ToString() == bulletBody.Node.Name);
+
+        var otherObject = SceneGameUnits.Find(
+          (obj) => obj.ID.ToString() == otherBody.Node.Name);
+
+        if (otherObject != null && bulletObject != null)
+        {
+          otherObject.GetDamage(bulletObject.DMG, SceneGameUnits);
+          DestroyBullet(bulletObject);
+        }
+      }
+    }
+
+
+    private void DestroyBullet(Bullet bullet)
+    {
+      bullet.Node.RemoveFromParent();
+      BulletsInScene.Remove(bullet);
     }
 
 
@@ -93,7 +176,7 @@ namespace SpaceGame
         {
           case (ushort)GameKeyCodes.W:
             //
-            if (Player.Position.Y + 1 < _scene.Size.Height - Player.Size.Height / 2)
+            if (Player.Position.Y + 1 < Scene.Size.Height - Player.Size.Height / 2)
               endPoint.Y += 1;
             break;
           case (ushort)GameKeyCodes.A:
@@ -105,7 +188,7 @@ namespace SpaceGame
               endPoint.Y -= 1;
             break;
           case (ushort)GameKeyCodes.D:
-            if (Player.Position.X + 1 < _scene.Size.Width - Player.Size.Width / 2)
+            if (Player.Position.X + 1 < Scene.Size.Width - Player.Size.Width / 2)
               endPoint.X += 1;
             break;
         }
@@ -113,7 +196,5 @@ namespace SpaceGame
 
       return SKAction.MoveBy(endPoint.X * 5, endPoint.Y * 5, 0.1);
     }
-
-
   }
 }

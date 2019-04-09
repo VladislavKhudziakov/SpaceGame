@@ -11,7 +11,7 @@ namespace SpaceGame
     protected Weapon(GameUnit weaponOwner) { owner = weaponOwner; }
 
 
-    protected SKAction CreateShootAction()
+    protected virtual SKAction CreateShootAction()
     {
       Mat3 rotationMatrix = new Mat3();
       rotationMatrix.SetRotation(-owner.CurrentRotation);

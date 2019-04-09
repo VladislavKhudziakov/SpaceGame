@@ -2,11 +2,16 @@
 
 namespace SpaceGame
 {
-  public class Enemy : GameUnit
+  public abstract class Enemy : GameUnit, IEnemy
   {
-    public Enemy(SKScene scene, string imgName) 
-      : base (scene, imgName, GameObjects.enemy)
-    {
-    }
+    public SKAction MovingAction { get; set; }
+
+
+    protected Enemy(GameController controller, string imgName) 
+      : base (controller, imgName, GameObjects.enemy) { }
+
+    
+    public abstract void Spawn();
+    protected abstract void Move();
   }
 }

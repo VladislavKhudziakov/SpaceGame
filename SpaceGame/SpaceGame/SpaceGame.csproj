@@ -69,6 +69,8 @@
     <BundleResource Include="Spaceship.png" />
     <BundleResource Include="playerStartSprite.png" />
     <BundleResource Include="purpleLaser.png" />
+    <BundleResource Include="baseEnemy.png" />
+    <BundleResource Include="redLaser.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -83,7 +85,7 @@
     <Compile Include="GameScene.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="EmptyEnumeration.cs" />
+    <Compile Include="GameObjects.cs" />
     <Compile Include="LaserBullet.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="Bullet.cs" />
@@ -99,6 +101,10 @@
     <Compile Include="PlayerWeapon.cs" />
     <Compile Include="CollisionDelegate.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="BaseEnemy.cs" />
+    <Compile Include="BaseEnemyWeapon.cs" />
+    <Compile Include="RedLaser.cs" />
+    <Compile Include="IEnemy.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
