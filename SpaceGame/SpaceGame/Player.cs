@@ -17,6 +17,7 @@ namespace SpaceGame
       Weapon = new PlayerWeapon(this);
     }
 
+
     public void ShootOnce()
     {
       Weapon.ShootOnce();
