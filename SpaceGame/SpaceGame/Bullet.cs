@@ -1,4 +1,6 @@
-﻿
+﻿using System.Timers;
+using System;
+
 namespace SpaceGame
 {
   public abstract class Bullet : GameObject, IBullet

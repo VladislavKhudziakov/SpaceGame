@@ -3,6 +3,7 @@ using SpriteKit;
 using CoreGraphics;
 using AppKit;
 using System.Collections.Generic;
+using PrintCore;
 
 namespace SpaceGame
 {
@@ -10,6 +11,7 @@ namespace SpaceGame
   {
     private Player _player;
     private readonly List<ushort> pressedKeys;
+    private double lastTime;
 
     public SKSpriteNode Player { get => _player.Node; set => _player.Node = value; }
     public List<GameUnit> SceneGameUnits { get; }
@@ -23,21 +25,15 @@ namespace SpaceGame
       SceneGameUnits = new List<GameUnit>();
       BulletsInScene = new List<Bullet>();
       pressedKeys = new List<ushort>();
-
     }
 
 
     public void SpawnPlayer()
     {
+      SpawnEnemy();
+      lastTime = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
       _player = new Player(this, "playerStartSprite.png");
       SceneGameUnits.Add(_player);
-      SpawnEnemy();
-      SpawnEnemy();
-      SpawnEnemy();
-      SpawnEnemy();
-      SpawnEnemy();
-      SpawnEnemy();
-      SpawnEnemy();
     }
 
 
@@ -61,6 +57,9 @@ namespace SpaceGame
     public void OnSceneUpdate(double currTime)
     {
       Player.RunAction(CreatePlayerMoveAction());
+      CheckBulletsForActions();
+      CheckUnitsForActions();
+      SpanwEnemyWithTimeOut(2000);
     }
 
 
@@ -113,7 +112,6 @@ namespace SpaceGame
     {
       var enemy = new BaseEnemy(this);
       enemy.Spawn();
-      enemy.ShootOnce();
       SceneGameUnits.Add(enemy);
     }
 
@@ -195,6 +193,77 @@ namespace SpaceGame
       }
 
       return SKAction.MoveBy(endPoint.X * 5, endPoint.Y * 5, 0.1);
+    }
+
+    private void SpanwEnemyWithTimeOut(double spawnDelay)
+    {
+      double now = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+
+      if (now >= lastTime + spawnDelay)
+      {
+        SpawnEnemy();
+        lastTime = now;
+      }
+        
+    }
+
+
+    private void CheckBulletsForActions()
+    {
+      for (int i = 0; i < BulletsInScene.Count; i++)
+      {
+        var bullet = BulletsInScene[i];
+
+        CheckIsBulletOutOfScreen(bullet);
+      }
+    }
+
+
+    private void CheckIsBulletOutOfScreen(Bullet bullet)
+    {
+      bool isNotInScreen = bullet.Node.Position.X + bullet.Node.Size.Width < 0 ||
+          bullet.Node.Position.X + bullet.Node.Size.Width > Scene.Size.Width ||
+          bullet.Node.Position.Y + bullet.Node.Size.Height < 0 ||
+          bullet.Node.Position.Y + bullet.Node.Size.Height > Scene.Size.Width;
+
+      if (isNotInScreen)
+        DestroyBullet(bullet);
+    }
+
+
+
+
+    private void CheckUnitsForActions()
+    {
+      for (int i = 0; i < SceneGameUnits.Count; i++)
+      {
+        var unit = SceneGameUnits[i] as Enemy;
+
+        if (unit != null)
+        {
+          CheckIsUnitOutOfScreen(unit);
+          unit.TryShoot();
+        }
+
+      }
+    }
+
+
+    private void CheckIsUnitOutOfScreen(GameUnit unit)
+    {
+      bool isNotInScreen = unit.Node.Position.X + unit.Node.Size.Width < 0 ||
+          unit.Node.Position.Y + unit.Node.Size.Height > Scene.Size.Width ||
+          unit.Node.Position.Y + unit.Node.Size.Height < 0;
+
+      if (isNotInScreen)
+        DeleteUnit(unit);
+    }
+
+
+    private void DeleteUnit(GameUnit unit)
+    {
+      SceneGameUnits.Remove(unit);
+      unit.Node.RemoveFromParent();
     }
   }
 }
