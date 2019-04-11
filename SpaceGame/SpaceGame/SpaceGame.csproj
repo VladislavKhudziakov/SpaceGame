@@ -106,6 +106,8 @@
     <Compile Include="BaseEnemyWeapon.cs" />
     <Compile Include="RedLaser.cs" />
     <Compile Include="IEnemy.cs" />
+    <Compile Include="Hud.cs" />
+    <Compile Include="LineBar.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

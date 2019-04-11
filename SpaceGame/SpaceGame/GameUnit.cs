@@ -14,6 +14,8 @@ namespace SpaceGame
     public GameController Controller { get; }
     public CGPoint LookDirection { get; set; }
     public IWeapon Weapon { get; set; }
+    public double HP { get => hp; }
+    public double Shields { get => shields; }
 
 
     public GameUnit(GameController controller, string spriteImgName, GameObjects type)

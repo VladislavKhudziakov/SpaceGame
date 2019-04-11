@@ -3,20 +3,20 @@ using SpriteKit;
 using CoreGraphics;
 using AppKit;
 using System.Collections.Generic;
-using PrintCore;
 
 namespace SpaceGame
 {
   public class GameController
   {
-    private Player _player;
+    //private Player _player;
     private readonly List<ushort> pressedKeys;
     private double lastTime;
 
-    public SKSpriteNode Player { get => _player.Node; set => _player.Node = value; }
+    public Player Player { get; set; }
     public List<GameUnit> SceneGameUnits { get; }
     public List<Bullet> BulletsInScene { get; set; }
     public SKScene Scene { get; }
+    public Hud Hud { get; }
 
 
     public GameController(SKScene scene)
@@ -25,6 +25,7 @@ namespace SpaceGame
       SceneGameUnits = new List<GameUnit>();
       BulletsInScene = new List<Bullet>();
       pressedKeys = new List<ushort>();
+      Hud = new Hud(this);
     }
 
 
@@ -32,34 +33,35 @@ namespace SpaceGame
     {
       SpawnEnemy();
       lastTime = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-      _player = new Player(this, "playerStartSprite.png");
-      SceneGameUnits.Add(_player);
+      Player = new Player(this, "playerStartSprite.png");
+      SceneGameUnits.Add(Player);
     }
 
 
     private void RotatePlayer(CGPoint mousePosition)
     {
-      var playerPosition = Player.Position;
+      var playerPosition = Player.Node.Position;
 
       var mouseDirection = GMath.Normalize(new CGPoint(
           mousePosition.X - playerPosition.X, mousePosition.Y - playerPosition.Y
       ));
 
-      double angle = GMath.Dot(mouseDirection, _player.LookDirection);
+      double angle = GMath.Dot(mouseDirection, Player.LookDirection);
 
       if (mouseDirection.Y < 0)
-        Player.ZRotation = (nfloat)(-Math.Acos(angle) - Math.PI / 2);
+        Player.Node.ZRotation = (nfloat)(-Math.Acos(angle) - Math.PI / 2);
       else
-        Player.ZRotation = (nfloat)(Math.Acos(angle) - Math.PI / 2);
+        Player.Node.ZRotation = (nfloat)(Math.Acos(angle) - Math.PI / 2);
     }
 
 
     public void OnSceneUpdate(double currTime)
     {
-      Player.RunAction(CreatePlayerMoveAction());
+      Player.Node.RunAction(CreatePlayerMoveAction());
       CheckBulletsForActions();
       CheckUnitsForActions();
       SpanwEnemyWithTimeOut(2000);
+      Hud.UpdateHudData();
     }
 
 
@@ -70,7 +72,7 @@ namespace SpaceGame
       {
         if (theEvent.KeyCode == 49)
         {
-          _player.ShootOnce();
+          Player.ShootOnce();
         } 
         else
         {
@@ -174,20 +176,22 @@ namespace SpaceGame
         {
           case (ushort)GameKeyCodes.W:
 
-            if (Player.Position.Y + 1 < Scene.Size.Height - Player.Size.Height / 2)
-              endPoint.Y += 1;
+            if (Player.Node.Position.Y + 1 < 
+              Scene.Size.Height - Player.Node.Size.Height / 2)
+                endPoint.Y += 1;
             break;
           case (ushort)GameKeyCodes.A:
-            if (Player.Position.X - 1 > Player.Size.Width / 2)
+            if (Player.Node.Position.X - 1 > Player.Node.Size.Width / 2)
               endPoint.X -= 1;
             break;
           case (ushort)GameKeyCodes.S:
-            if (Player.Position.Y - 1 > Player.Size.Height / 2)
+            if (Player.Node.Position.Y - 1 > Player.Node.Size.Height / 2)
               endPoint.Y -= 1;
             break;
           case (ushort)GameKeyCodes.D:
-            if (Player.Position.X + 1 < Scene.Size.Width - Player.Size.Width / 2)
-              endPoint.X += 1;
+            if (Player.Node.Position.X + 1 < 
+              Scene.Size.Width - Player.Node.Size.Width / 2)
+                endPoint.X += 1;
             break;
         }
       }
@@ -237,9 +241,8 @@ namespace SpaceGame
     {
       for (int i = 0; i < SceneGameUnits.Count; i++)
       {
-        var unit = SceneGameUnits[i] as Enemy;
 
-        if (unit != null)
+        if (SceneGameUnits[i] is Enemy unit)
         {
           CheckIsUnitOutOfScreen(unit);
           unit.TryShoot();
