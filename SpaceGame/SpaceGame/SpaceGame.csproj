@@ -71,6 +71,7 @@
     <BundleResource Include="purpleLaser.png" />
     <BundleResource Include="baseEnemy.png" />
     <BundleResource Include="redLaser.png" />
+    <BundleResource Include="explosion.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />

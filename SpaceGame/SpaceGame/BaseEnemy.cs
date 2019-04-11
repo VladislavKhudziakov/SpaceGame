@@ -8,8 +8,8 @@ namespace SpaceGame
   {
     public BaseEnemy(GameController controller) : base(controller, "baseEnemy.png")
     {
-      hp = 10;
-      shields = 0;
+      hp = 20;
+      shields = 15;
 
       DefaultRotation = Math.PI / 2;
       Node.ZRotation += (nfloat)DefaultRotation;

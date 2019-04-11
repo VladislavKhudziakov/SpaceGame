@@ -1,21 +1,22 @@
 ﻿using SpriteKit;
 using CoreGraphics;
-using System.Collections.Generic;
+using System;
+using System.Timers;
+
 namespace SpaceGame
 {
   public class GameUnit : GameObject
   {
     protected double hp;
     protected double shields;
-    //protected GameController _controller;
 
 
-    public CGPoint LookDirection { get; set; }
     public GameController Controller { get; }
+    public CGPoint LookDirection { get; set; }
     public IWeapon Weapon { get; set; }
 
 
-    public GameUnit(GameController controller, string spriteImgName, GameObjects type) 
+    public GameUnit(GameController controller, string spriteImgName, GameObjects type)
       : base(spriteImgName)
     {
       Controller = controller;
@@ -33,10 +34,11 @@ namespace SpaceGame
 
       _node.PhysicsBody.CollisionBitMask = (uint)GameObjects.none;
     }
-    
 
-    public virtual void GetDamage(double incomeDmg, List<GameUnit> gameObjects)
+
+    public virtual void GetDamage(double incomeDmg)
     {
+      AnimateGettingGamage();
       if (shields - incomeDmg >= 0)
       {
         shields -= incomeDmg;
@@ -54,16 +56,35 @@ namespace SpaceGame
     }
 
 
-    protected virtual void Destroy() 
+    protected virtual void Destroy()
     {
-      Node.RemoveFromParent();
-      Controller.SceneGameUnits.Remove(this);
+      Node.Texture = SKTexture.FromImageNamed("explosion.png");
+
+      var timer = new Timer(100);
+
+      timer.Start();
+
+      timer.Elapsed += (sender, e) => 
+      { Node.RemoveFromParent();
+        Controller.SceneGameUnits.Remove(this);
+      };
     }
 
 
     public virtual void GetShields(double incomeArmor)
     {
       shields += incomeArmor;
+    }
+
+
+    protected virtual void AnimateGettingGamage()
+    {
+      var fadeAlphaOut = SKAction.FadeAlphaTo(0.5f, 0.25);
+      var fadeAlphaIn = SKAction.FadeAlphaTo(1f, 0.25);
+      var resultingAction = SKAction.Sequence(
+        fadeAlphaOut, fadeAlphaIn, fadeAlphaOut, fadeAlphaIn);
+
+      Node.RunAction(resultingAction);
     }
 
 

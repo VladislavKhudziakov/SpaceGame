@@ -152,7 +152,7 @@ namespace SpaceGame
 
         if (otherObject != null && bulletObject != null)
         {
-          otherObject.GetDamage(bulletObject.DMG, SceneGameUnits);
+          otherObject.GetDamage(bulletObject.DMG);
           DestroyBullet(bulletObject);
         }
       }
@@ -175,7 +175,7 @@ namespace SpaceGame
         switch (keyCode)
         {
           case (ushort)GameKeyCodes.W:
-            //
+
             if (Player.Position.Y + 1 < Scene.Size.Height - Player.Size.Height / 2)
               endPoint.Y += 1;
             break;

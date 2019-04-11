@@ -26,13 +26,5 @@ namespace SpaceGame
       _node.ZPosition = 1;
     }
 
-
-    //public GameObject(CGPoint position, string spriteImgName)
-    //{
-    //  _spriteTexture = SKTexture.FromImageNamed(spriteImgName);
-    //  _node = SKSpriteNode.FromTexture(_spriteTexture);
-    //  _node.ZPosition = 1;
-    //  _node.Position = new CGPoint(position);
-    //}
   }
 }
