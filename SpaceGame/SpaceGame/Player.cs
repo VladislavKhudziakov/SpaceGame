@@ -19,7 +19,7 @@ namespace SpaceGame
       Node.Position = 
         new CGPoint(Node.Size.Width * 1.5, Controller.Scene.Size.Height * 0.5);
 
-      Weapon = new BaseLaserWeapon(this);
+      Weapon = new TripleLaserWeapon(this);
 
       LookDirection = GMath.Normalize(new CGPoint(Controller.Scene.Size.Width, 0));
 

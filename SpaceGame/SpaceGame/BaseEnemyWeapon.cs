@@ -31,11 +31,29 @@ namespace SpaceGame
 
     public override void ShootOnce()
     {
+      //CreateBullet(10);
+      CreateBullet(0);
+      //CreateBullet(-10);
+    }
+
+    protected virtual void CreateBullet(double offset)
+    {
       var laserBeam = new RedLaser();
-      laserBeam.Node.Position = new CGPoint(owner.Node.Position);
 
       laserBeam.Node.ZRotation =
-        (nfloat)(owner.CurrentRotation + laserBeam.DefaultRotation);
+       (nfloat)(owner.CurrentRotation + laserBeam.DefaultRotation);
+
+      double radius = offset;
+
+      double x = owner.Node.Position.X +
+        radius * Math.Cos(owner.CurrentRotation + Math.PI / 2);
+
+      double y = owner.Node.Position.Y +
+        radius * Math.Sin(owner.CurrentRotation + Math.PI / 2);
+
+      var finalPoint = new CGPoint(x, y);
+
+      laserBeam.Node.Position = finalPoint;
 
       owner.Node.Scene.AddChild(laserBeam.Node);
 

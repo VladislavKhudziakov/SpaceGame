@@ -72,6 +72,9 @@
     <BundleResource Include="baseEnemy.png" />
     <BundleResource Include="redLaser.png" />
     <BundleResource Include="explosion.png" />
+    <BundleResource Include="Lvl2Enemy.png" />
+    <BundleResource Include="Lvl3Enemy.png" />
+    <BundleResource Include="Lvl4Enemy.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -102,7 +105,7 @@
     <Compile Include="BaseLaserWeapon.cs" />
     <Compile Include="CollisionDelegate.cs" />
     <Compile Include="Enemy.cs" />
-    <Compile Include="BaseEnemy.cs" />
+    <Compile Include="Lvl1Enemy.cs" />
     <Compile Include="BaseEnemyWeapon.cs" />
     <Compile Include="RedLaser.cs" />
     <Compile Include="IEnemy.cs" />
@@ -110,6 +113,11 @@
     <Compile Include="LineBar.cs" />
     <Compile Include="DoubleLaserWeapon.cs" />
     <Compile Include="TripleLaserWeapon.cs" />
+    <Compile Include="Lvl2Enemy.cs" />
+    <Compile Include="Lvl3Enemy.cs" />
+    <Compile Include="Lvl4Enemy.cs" />
+    <Compile Include="DoubleLaserEnemyWeapon.cs" />
+    <Compile Include="TrippleLaserEnemyWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

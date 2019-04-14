@@ -1,22 +1,22 @@
 ﻿using System;
-using CoreGraphics;
 using SpriteKit;
+using CoreGraphics;
 
 namespace SpaceGame
 {
-  public class BaseEnemy : Enemy
+  public class Lvl2Enemy : Enemy
   {
-    public BaseEnemy(GameController controller) : base(controller, "baseEnemy.png")
+    public Lvl2Enemy(GameController controller) : base(controller, "Lvl2Enemy.png")
     {
       hp = 10;
-      shields = 0;
+      shields = 10;
 
       DefaultRotation = Math.PI / 2;
       Node.ZRotation += (nfloat)DefaultRotation;
 
-      Node.SetScale(0.25f / 5);
-     
-      Weapon = new BaseEnemyWeapon(this);
+      Node.SetScale(0.5f / 5);
+
+      Weapon = new DoubleLaserEnemyWeapon(this);
     }
 
 
@@ -30,7 +30,7 @@ namespace SpaceGame
       Node.Position = new CGPoint(x, y);
 
       Move();
-
+      
       Controller.Scene.AddChild(Node);
     }
 

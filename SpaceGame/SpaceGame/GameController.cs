@@ -104,8 +104,30 @@ namespace SpaceGame
 
     public void SpawnEnemy()
     {
-      var enemy = new BaseEnemy(this);
-      enemy.Spawn();
+      Enemy enemy = null;
+
+      if (PlayerScore <= 50)
+      {
+        enemy = new Lvl1Enemy(this);
+      }
+      else if (PlayerScore <= 100)
+      {
+        enemy = new Lvl2Enemy(this);
+      }
+      else if (PlayerScore <= 150)
+      {
+        enemy = new Lvl3Enemy(this);
+      }
+      else if (PlayerScore <= 200)
+      {
+        enemy = new Lvl4Enemy(this);
+      }
+
+      if (enemy != null)
+      {
+        enemy.Spawn();
+      }
+
       SceneGameUnits.Add(enemy);
     }
 
