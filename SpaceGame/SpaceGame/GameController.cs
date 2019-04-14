@@ -6,10 +6,13 @@ using System.Collections.Generic;
 
 namespace SpaceGame
 {
+  delegate void UpdateDelegate();
+
   public class GameController
   {
     private readonly List<ushort> pressedKeys;
     private double lastTime;
+    private bool isBoss;
 
     public Player Player { get; set; }
     public List<GameUnit> SceneGameUnits { get; }
@@ -17,15 +20,22 @@ namespace SpaceGame
     public SKScene Scene { get; }
     public Hud Hud { get; }
     public int PlayerScore { get; set; }
+    internal UpdateDelegate SceneUpdateDelegate { get; set; }
 
 
     public GameController(SKScene scene)
     {
+      isBoss = false;
       Scene = scene;
       SceneGameUnits = new List<GameUnit>();
       BulletsInScene = new List<Bullet>();
       pressedKeys = new List<ushort>();
       Hud = new Hud(this);
+
+      SceneUpdateDelegate = new UpdateDelegate(CheckBulletsForActions);
+      SceneUpdateDelegate += CheckUnitsForActions;
+      SceneUpdateDelegate += CheckForMovingPlayer;
+      SceneUpdateDelegate += CheckForEnemySpawning;
     }
 
 
@@ -58,10 +68,7 @@ namespace SpaceGame
 
     public void OnSceneUpdate(double currTime)
     {
-      Player.Node.RunAction(CreatePlayerMoveAction());
-      CheckBulletsForActions();
-      CheckUnitsForActions();
-      SpanwEnemyWithTimeOut(2000);
+      SceneUpdateDelegate();
     }
 
 
@@ -106,29 +113,33 @@ namespace SpaceGame
     {
       Enemy enemy = null;
 
-      if (PlayerScore <= 50)
+      if (PlayerScore <= 5)
       {
         enemy = new Lvl1Enemy(this);
       }
-      else if (PlayerScore <= 100)
+      else if (PlayerScore <= 10)
       {
         enemy = new Lvl2Enemy(this);
       }
-      else if (PlayerScore <= 150)
+      else if (PlayerScore <= 15)
       {
         enemy = new Lvl3Enemy(this);
       }
-      else if (PlayerScore <= 200)
+      else if (PlayerScore <= 20)
       {
         enemy = new Lvl4Enemy(this);
+      }
+      else
+      {
+        isBoss = true;
+        enemy = new Boss(this);
       }
 
       if (enemy != null)
       {
         enemy.Spawn();
+        SceneGameUnits.Add(enemy);
       }
-
-      SceneGameUnits.Add(enemy);
     }
 
 
@@ -218,12 +229,14 @@ namespace SpaceGame
     {
       double now = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
 
-      if (now >= lastTime + spawnDelay)
+      if (!isBoss)
       {
-        SpawnEnemy();
-        lastTime = now;
+        if (now >= lastTime + spawnDelay)
+        {
+          SpawnEnemy();
+          lastTime = now;
+        }
       }
-        
     }
 
 
@@ -274,10 +287,22 @@ namespace SpaceGame
     }
 
 
+    private void CheckForMovingPlayer()
+    {
+      Player.Node.RunAction(CreatePlayerMoveAction());
+    }
+
+
     private void DeleteUnit(GameUnit unit)
     {
       SceneGameUnits.Remove(unit);
       unit.Node.RemoveFromParent();
+    }
+
+
+    private void CheckForEnemySpawning()
+    {
+      SpanwEnemyWithTimeOut(2000);
     }
   }
 }

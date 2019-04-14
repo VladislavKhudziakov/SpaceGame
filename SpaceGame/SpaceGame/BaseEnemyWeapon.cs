@@ -31,9 +31,7 @@ namespace SpaceGame
 
     public override void ShootOnce()
     {
-      //CreateBullet(10);
       CreateBullet(0);
-      //CreateBullet(-10);
     }
 
     protected virtual void CreateBullet(double offset)

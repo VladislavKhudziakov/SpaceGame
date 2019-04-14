@@ -75,6 +75,7 @@
     <BundleResource Include="Lvl2Enemy.png" />
     <BundleResource Include="Lvl3Enemy.png" />
     <BundleResource Include="Lvl4Enemy.png" />
+    <BundleResource Include="Boss.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -118,6 +119,7 @@
     <Compile Include="Lvl4Enemy.cs" />
     <Compile Include="DoubleLaserEnemyWeapon.cs" />
     <Compile Include="TrippleLaserEnemyWeapon.cs" />
+    <Compile Include="Boss.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />
