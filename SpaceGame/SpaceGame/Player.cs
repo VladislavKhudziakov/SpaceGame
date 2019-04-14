@@ -1,5 +1,4 @@
 ﻿using System;
-using SpriteKit;
 using CoreGraphics;
 
 namespace SpaceGame
@@ -20,7 +19,7 @@ namespace SpaceGame
       Node.Position = 
         new CGPoint(Node.Size.Width * 1.5, Controller.Scene.Size.Height * 0.5);
 
-      Weapon = new PlayerWeapon(this);
+      Weapon = new BaseLaserWeapon(this);
 
       LookDirection = GMath.Normalize(new CGPoint(Controller.Scene.Size.Width, 0));
 

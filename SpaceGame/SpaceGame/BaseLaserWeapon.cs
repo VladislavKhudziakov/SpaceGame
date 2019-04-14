@@ -4,16 +4,16 @@ using CoreGraphics;
 
 namespace SpaceGame
 {
-  public class PlayerWeapon : Weapon
+  public class BaseLaserWeapon : Weapon
   {
-    public PlayerWeapon(GameUnit weaponOwner) : base(weaponOwner) { }
+    public BaseLaserWeapon(GameUnit weaponOwner) : base(weaponOwner) { }
 
 
     public override void ShootOnce()
     {
-      CreateBullet(15);
+      //CreateBullet(15);
       CreateBullet(0);
-      CreateBullet(-15);
+      //CreateBullet(-15);
     }
 
 

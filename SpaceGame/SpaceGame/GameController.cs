@@ -16,6 +16,7 @@ namespace SpaceGame
     public List<Bullet> BulletsInScene { get; set; }
     public SKScene Scene { get; }
     public Hud Hud { get; }
+    public int PlayerScore { get; set; }
 
 
     public GameController(SKScene scene)
@@ -97,13 +98,7 @@ namespace SpaceGame
 
     public void OnNodesCollision(SKPhysicsContact contact)
     {
-      if (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet ||
-          contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet ||
-          contact.BodyA.CategoryBitMask ==(uint)GameObjects.playerBullet ||
-          contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet )
-      {
-        OnBulletCollision(contact);
-      }
+      OnBulletCollision(contact);
     }
 
 
@@ -117,13 +112,6 @@ namespace SpaceGame
 
     private void OnBulletCollision(SKPhysicsContact contact)
     {
-      //bool isDifferentTypes =
-          //contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
-          //!(contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
-          //contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet) &&
-          //!(contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
-          //contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet);
-
       bool isDifferentTypes =
         contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
         ((contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
@@ -138,7 +126,7 @@ namespace SpaceGame
         SKPhysicsBody otherBody;
 
         if (contact.BodyA.CategoryBitMask == (uint)GameObjects.playerBullet ||
-          contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet)
+          contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet) 
         {
           bulletBody = contact.BodyA;
           otherBody = contact.BodyB;
@@ -180,7 +168,6 @@ namespace SpaceGame
         switch (keyCode)
         {
           case (ushort)GameKeyCodes.W:
-
             if (Player.Node.Position.Y + 1 < 
               Scene.Size.Height - Player.Node.Size.Height / 2)
                 endPoint.Y += 1;
@@ -245,13 +232,11 @@ namespace SpaceGame
     {
       for (int i = 0; i < SceneGameUnits.Count; i++)
       {
-
         if (SceneGameUnits[i] is Enemy unit)
         {
           CheckIsUnitOutOfScreen(unit);
           unit.TryShoot();
         }
-
       }
     }
 

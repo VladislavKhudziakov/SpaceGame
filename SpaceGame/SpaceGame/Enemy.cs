@@ -1,5 +1,4 @@
 ﻿using SpriteKit;
-using System.Timers;
 using System;
 
 namespace SpaceGame
@@ -10,12 +9,13 @@ namespace SpaceGame
     protected double reloadTimer;
     protected double reloadDelay;
 
+
     protected Enemy(GameController controller, string imgName) 
       : base (controller, imgName, GameObjects.enemy) 
-      {
-        reloadTimer = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-        reloadDelay = 1000;
-      }
+    {
+      reloadTimer = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+      reloadDelay = 1000;
+    }
 
     
     public abstract void Spawn();
@@ -31,6 +31,14 @@ namespace SpaceGame
         Weapon.ShootOnce();
         reloadTimer = now;
       }
+    }
+
+
+    protected override void Destroy()
+    {
+      base.Destroy();
+      Controller.PlayerScore++;
+      Controller.Hud.UpdateScore();
     }
   }
 }

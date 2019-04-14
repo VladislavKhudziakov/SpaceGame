@@ -1,6 +1,5 @@
 ﻿using SpriteKit;
 using CoreGraphics;
-using System;
 using System.Timers;
 
 namespace SpaceGame
@@ -41,6 +40,7 @@ namespace SpaceGame
     public virtual void GetDamage(double incomeDmg)
     {
       AnimateGettingGamage();
+
       if (shields - incomeDmg >= 0)
       {
         shields -= incomeDmg;
@@ -48,12 +48,10 @@ namespace SpaceGame
       else
       {
         double dmg = incomeDmg - shields;
+
         hp -= dmg;
 
-        if (hp <= 0)
-        {
-          Destroy();
-        }
+        if (hp <= 0) Destroy();
       }
     }
 
@@ -67,7 +65,8 @@ namespace SpaceGame
       timer.Start();
 
       timer.Elapsed += (sender, e) => 
-      { Node.RemoveFromParent();
+      { 
+        Node.RemoveFromParent();
         Controller.SceneGameUnits.Remove(this);
       };
     }
