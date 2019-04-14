@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SpaceGame
 {
-  delegate void UpdateDelegate();
+  public delegate void UpdateDelegate();
 
   public class GameController
   {
@@ -14,13 +14,14 @@ namespace SpaceGame
     private double lastTime;
     private bool isBoss;
 
+
     public Player Player { get; set; }
     public List<GameUnit> SceneGameUnits { get; }
     public List<Bullet> BulletsInScene { get; set; }
     public SKScene Scene { get; }
     public Hud Hud { get; }
     public int PlayerScore { get; set; }
-    internal UpdateDelegate SceneUpdateDelegate { get; set; }
+    public UpdateDelegate SceneUpdateDelegate { get; set; }
 
 
     public GameController(SKScene scene)
@@ -53,9 +54,10 @@ namespace SpaceGame
     {
       var playerPosition = Player.Node.Position;
 
-      var mouseDirection = GMath.Normalize(new CGPoint(
-          mousePosition.X - playerPosition.X, mousePosition.Y - playerPosition.Y
-      ));
+      double mouseDirX = mousePosition.X - playerPosition.X;
+      double mouseDirY = mousePosition.Y - playerPosition.Y;
+
+      var mouseDirection = GMath.Normalize(new CGPoint(mouseDirX, mouseDirY));
 
       double angle = GMath.Dot(mouseDirection, Player.LookDirection);
 
