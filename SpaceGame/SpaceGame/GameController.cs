@@ -8,7 +8,6 @@ namespace SpaceGame
 {
   public class GameController
   {
-    //private Player _player;
     private readonly List<ushort> pressedKeys;
     private double lastTime;
 
@@ -35,6 +34,7 @@ namespace SpaceGame
       lastTime = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
       Player = new Player(this, "playerStartSprite.png");
       SceneGameUnits.Add(Player);
+      Hud.UpdateHudData();
     }
 
 
@@ -61,13 +61,11 @@ namespace SpaceGame
       CheckBulletsForActions();
       CheckUnitsForActions();
       SpanwEnemyWithTimeOut(2000);
-      Hud.UpdateHudData();
     }
 
 
     public void OnSceneKeyDown(NSEvent theEvent)
     {
-
       if (!pressedKeys.Contains(theEvent.KeyCode))
       {
         if (theEvent.KeyCode == 49)
@@ -99,7 +97,6 @@ namespace SpaceGame
 
     public void OnNodesCollision(SKPhysicsContact contact)
     {
-
       if (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet ||
           contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet ||
           contact.BodyA.CategoryBitMask ==(uint)GameObjects.playerBullet ||
@@ -120,12 +117,20 @@ namespace SpaceGame
 
     private void OnBulletCollision(SKPhysicsContact contact)
     {
+      //bool isDifferentTypes =
+          //contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
+          //!(contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+          //contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet) &&
+          //!(contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
+          //contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet);
+
       bool isDifferentTypes =
-          contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
-          !(contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
-          contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet) &&
-          !(contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
-          contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet);
+        contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
+        ((contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet) ||
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet));
+
 
       if (isDifferentTypes)
       {
@@ -199,6 +204,7 @@ namespace SpaceGame
       return SKAction.MoveBy(endPoint.X * 5, endPoint.Y * 5, 0.1);
     }
 
+
     private void SpanwEnemyWithTimeOut(double spawnDelay)
     {
       double now = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
@@ -233,8 +239,6 @@ namespace SpaceGame
       if (isNotInScreen)
         DestroyBullet(bullet);
     }
-
-
 
 
     private void CheckUnitsForActions()

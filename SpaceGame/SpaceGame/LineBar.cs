@@ -57,12 +57,12 @@ namespace SpaceGame
 
     public void UpdateBarData(double data)
     {
-      controller.Scene.RemoveChildren(new SKNode[] { Line });
 
       Label.Text = StrTemplate + $" { data } / 100";
 
       double widthHpAspect = MaxLineWidth / 100;
       double HPBarWidth = data * widthHpAspect;
+      controller.Scene.RemoveChildren(new SKNode[] { Line });
       double HPBarHeight = MaxlineHeigth;
       
       Line = SKShapeNode.FromRect(new CGSize(HPBarWidth, HPBarHeight));

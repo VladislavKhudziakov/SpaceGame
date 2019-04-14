@@ -32,5 +32,11 @@ namespace SpaceGame
     {
       Weapon.ShootOnce();
     }
+
+    public override void GetDamage(double incomeDmg)
+    {
+      base.GetDamage(incomeDmg);
+      Controller.Hud.UpdateHudData();
+    }
   }
 }
