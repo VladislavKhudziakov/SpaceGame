@@ -25,6 +25,5 @@ namespace SpaceGame
       _node.Name = _id.ToString();
       _node.ZPosition = 1;
     }
-
   }
 }

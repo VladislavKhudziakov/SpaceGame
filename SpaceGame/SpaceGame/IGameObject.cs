@@ -8,5 +8,6 @@ namespace SpaceGame
     double DefaultRotation { get; set; }
     double CurrentRotation { get; }
     Guid ID { get; }
+
   }
 }

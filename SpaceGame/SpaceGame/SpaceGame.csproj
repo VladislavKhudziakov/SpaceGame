@@ -124,6 +124,7 @@
     <Compile Include="TrippleLaserEnemyWeapon.cs" />
     <Compile Include="Boss.cs" />
     <Compile Include="BossLaeserWeapon.cs" />
+    <Compile Include="Bonus.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

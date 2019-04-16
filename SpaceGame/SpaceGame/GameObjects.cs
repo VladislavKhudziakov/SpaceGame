@@ -7,6 +7,7 @@ namespace SpaceGame
     player = 1,
     playerBullet = 2,
     enemy = 3,
-    enemyBullet = 4
+    enemyBullet = 4,
+    bonus = 5
   }
 }
