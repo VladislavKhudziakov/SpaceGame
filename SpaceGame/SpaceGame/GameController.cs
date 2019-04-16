@@ -286,7 +286,11 @@ namespace SpaceGame
           unit.Node.Position.Y + unit.Node.Size.Height < 0;
 
       if (isNotInScreen)
+      {
         DeleteUnit(unit);
+        Player.GetDamage(10);
+      }
+        
     }
 
 

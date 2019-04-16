@@ -1,7 +1,6 @@
 ﻿using System;
 using CoreGraphics;
 using SpriteKit;
-using PrintCore;
 
 namespace SpaceGame
 {
@@ -20,7 +19,7 @@ namespace SpaceGame
 
       Node.SetScale(0.5f);
 
-      Weapon = new TrippleLaserEnemyWeapon(this);
+      Weapon = new BossLaserWeapon(this);
 
       timer = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
 

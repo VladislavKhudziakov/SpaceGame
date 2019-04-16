@@ -5,9 +5,12 @@ namespace SpaceGame
 {
   public class Player : GameUnit
   {
+    private int currWeaponLvl;
+
     public Player(GameController controller, string imgName)
       : base(controller, imgName, GameObjects.player)
     {
+      currWeaponLvl = 1;
       hp = 100;
       shields = 100;
 
@@ -19,7 +22,7 @@ namespace SpaceGame
       Node.Position = 
         new CGPoint(Node.Size.Width * 1.5, Controller.Scene.Size.Height * 0.5);
 
-      Weapon = new TripleLaserWeapon(this);
+      UpdateWeapon();
 
       LookDirection = GMath.Normalize(new CGPoint(Controller.Scene.Size.Width, 0));
 
@@ -32,10 +35,35 @@ namespace SpaceGame
       Weapon.ShootOnce();
     }
 
+
     public override void GetDamage(double incomeDmg)
     {
       base.GetDamage(incomeDmg);
       Controller.Hud.UpdateHudData();
+    }
+
+
+    public void UpWeaponLvl()
+    {
+      currWeaponLvl = currWeaponLvl > 3 ? 3 : currWeaponLvl + 1;
+      UpdateWeapon();
+    }
+
+
+    private void UpdateWeapon()
+    {
+      if (currWeaponLvl == 2)
+      {
+        Weapon = new DoubleLaserWeapon(this);
+      }
+      else if (currWeaponLvl == 3)
+      {
+        Weapon = new TripleLaserWeapon(this);
+      }
+      else
+      {
+        Weapon = new BaseLaserWeapon(this);
+      }
     }
   }
 }
