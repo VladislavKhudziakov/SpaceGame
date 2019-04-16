@@ -16,7 +16,7 @@ namespace SpaceGame
       rotationMatrix.SetRotation(-owner.CurrentRotation);
 
       Mat3 translationMatrix = new Mat3();
-      translationMatrix.SetTranslation(owner.Node.Scene.Size.Width, 0);
+       translationMatrix.SetTranslation(owner.Node.Scene.Size.Width, 0);
 
       Mat3 transformation = rotationMatrix * translationMatrix;
 

@@ -125,6 +125,9 @@
     <Compile Include="Boss.cs" />
     <Compile Include="BossLaeserWeapon.cs" />
     <Compile Include="Bonus.cs" />
+    <Compile Include="HealBonus.cs" />
+    <Compile Include="ShieldsBonus.cs" />
+    <Compile Include="WeaponBonus.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

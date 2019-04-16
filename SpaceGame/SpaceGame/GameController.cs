@@ -12,12 +12,15 @@ namespace SpaceGame
   {
     private readonly List<ushort> pressedKeys;
     private double lastTime;
+    private double bonusTimer;
+    private double bonusDelay;
     private Boss boss;
 
 
     public Player Player { get; set; }
     public List<GameUnit> SceneGameUnits { get; }
-    public List<Bullet> BulletsInScene { get; set; }
+    public List<Bullet> BulletsInScene { get; }
+    public List<Bonus> BonusesInScene { get; }
     public SKScene Scene { get; }
     public Hud Hud { get; }
     public int PlayerScore { get; set; }
@@ -29,6 +32,7 @@ namespace SpaceGame
       Scene = scene;
       SceneGameUnits = new List<GameUnit>();
       BulletsInScene = new List<Bullet>();
+      BonusesInScene = new List<Bonus>();
       pressedKeys = new List<ushort>();
       Hud = new Hud(this);
       boss = null;
@@ -37,13 +41,16 @@ namespace SpaceGame
       SceneUpdateDelegate += CheckUnitsForActions;
       SceneUpdateDelegate += CheckForMovingPlayer;
       SceneUpdateDelegate += CheckForEnemySpawning;
+      SceneUpdateDelegate += CheckForBonusCreating;
     }
 
 
     public void SpawnPlayer()
     {
       SpawnEnemy();
+      GenerateBonusDelay();
       lastTime = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+      bonusTimer = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
       Player = new Player(this, "playerStartSprite.png");
       SceneGameUnits.Add(Player);
       Hud.UpdateHudData();
@@ -108,6 +115,7 @@ namespace SpaceGame
     public void OnNodesCollision(SKPhysicsContact contact)
     {
       OnBulletCollision(contact);
+      OnBonusCollision(contact);
     }
 
 
@@ -148,15 +156,7 @@ namespace SpaceGame
 
     private void OnBulletCollision(SKPhysicsContact contact)
     {
-      bool isDifferentTypes =
-        contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
-        ((contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
-        contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet) ||
-        (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
-        contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet));
-
-
-      if (isDifferentTypes)
+      if (IsBulletContact(contact))
       {
         SKPhysicsBody bulletBody;
         SKPhysicsBody otherBody;
@@ -188,10 +188,81 @@ namespace SpaceGame
     }
 
 
+    private bool IsBulletContact(SKPhysicsContact contact)
+    {
+      bool isPlayerAndEnemyBullet =
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.enemyBullet) ||
+        (contact.BodyB.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyA.CategoryBitMask == (uint)GameObjects.enemyBullet);
+
+      bool isEnemyAndPlayerBullet =
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet) ||
+        (contact.BodyB.CategoryBitMask == (uint)GameObjects.enemy &&
+        contact.BodyA.CategoryBitMask == (uint)GameObjects.playerBullet);
+
+      return contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
+        isEnemyAndPlayerBullet || isPlayerAndEnemyBullet;
+    }
+
+
+    private void OnBonusCollision(SKPhysicsContact contact)
+    {
+      if (IsBonusContact(contact))
+      {
+        SKPhysicsBody BonusBody;
+
+        if (contact.BodyA.CategoryBitMask == (uint)GameObjects.bonus)
+        {
+          BonusBody = contact.BodyA;
+        }
+        else
+        {
+          BonusBody = contact.BodyB;
+        }
+
+        var BonusObject = BonusesInScene.Find(
+          (obj) => obj.ID.ToString() == BonusBody.Node.Name);
+
+        if (BonusObject != null)
+        {
+          BonusObject.Get();
+          DestroyBonus(BonusObject);
+        }
+      }
+    }
+
+
+    private bool IsBonusContact(SKPhysicsContact contact)
+    {
+      bool isPlayerAndBonusContact =
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.bonus) ||
+        (contact.BodyB.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyA.CategoryBitMask == (uint)GameObjects.bonus);
+
+      bool isPlayerBulletAndBonus =
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.playerBullet &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.bonus) ||
+        (contact.BodyB.CategoryBitMask == (uint)GameObjects.playerBullet &&
+        contact.BodyA.CategoryBitMask == (uint)GameObjects.bonus);
+
+      return contact.BodyA.CategoryBitMask != contact.BodyB.CategoryBitMask &&
+        isPlayerBulletAndBonus || isPlayerAndBonusContact;
+    }
+
+
     private void DestroyBullet(Bullet bullet)
     {
       bullet.Node.RemoveFromParent();
       BulletsInScene.Remove(bullet);
+    }
+
+    private void DestroyBonus(Bonus bonus)
+    {
+      bonus.Node.RemoveFromParent();
+      BonusesInScene.Remove(bonus);
     }
 
 
@@ -310,6 +381,43 @@ namespace SpaceGame
     private void CheckForEnemySpawning()
     {
       SpanwEnemyWithTimeOut(2000);
+    }
+
+
+    private void CheckForBonusCreating()
+    {
+      double now = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+
+      if (now >= bonusTimer + bonusDelay)
+      {
+        GenerateBonus();
+        bonusTimer = now;
+        GenerateBonusDelay();
+      }
+    }
+
+
+    private void GenerateBonusDelay()
+    {
+      bonusDelay = GMath.GenerateRandomInRange(20000, 40000);
+    }
+
+
+    private Bonus GenerateBonus()
+    {
+      var randValue = GMath.GenerateRandomInRange(1, 4);
+
+      if ((int)randValue == 1)
+      {
+        return new HealBonus(this);
+      }
+
+      if ((int)randValue == 2)
+      {
+        return new ShieldsBonus(this);
+      }
+ 
+      return new WeaponBonus(this);
     }
   }
 }

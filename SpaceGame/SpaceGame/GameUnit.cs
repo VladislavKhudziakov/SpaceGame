@@ -74,7 +74,10 @@ namespace SpaceGame
 
     public virtual void GetShields(double incomeArmor)
     {
-      shields += incomeArmor;
+      if (shields + incomeArmor <= 100)
+        shields += incomeArmor;
+      else
+        shields = 100;
     }
 
 
@@ -91,7 +94,10 @@ namespace SpaceGame
 
     public virtual void GetHeal(double incomeHeal)
     {
-      hp += incomeHeal;
+      if (hp + incomeHeal <= 100)
+        hp += incomeHeal;
+      else
+        hp = 100;
     }
   }
 }

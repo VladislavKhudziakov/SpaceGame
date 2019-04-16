@@ -42,10 +42,22 @@ namespace SpaceGame
       Controller.Hud.UpdateHudData();
     }
 
+    public override void GetHeal(double incomeHeal)
+    {
+      base.GetHeal(incomeHeal);
+      Controller.Hud.UpdateHudData();
+    }
+
+    public override void GetShields(double incomeArmor)
+    {
+      base.GetShields(incomeArmor);
+      Controller.Hud.UpdateHudData();
+    }
+
 
     public void UpWeaponLvl()
     {
-      currWeaponLvl = currWeaponLvl > 3 ? 3 : currWeaponLvl + 1;
+      currWeaponLvl = currWeaponLvl >= 3 ? 3 : currWeaponLvl + 1;
       UpdateWeapon();
     }
 
