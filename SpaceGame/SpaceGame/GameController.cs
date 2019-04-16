@@ -116,6 +116,7 @@ namespace SpaceGame
     {
       OnBulletCollision(contact);
       OnBonusCollision(contact);
+      OnEnemyCollision(contact);
     }
 
 
@@ -253,11 +254,58 @@ namespace SpaceGame
     }
 
 
+    private void OnEnemyCollision(SKPhysicsContact contact)
+    {
+      bool isPlayerAndEnemyContact =
+        (contact.BodyA.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyB.CategoryBitMask == (uint)GameObjects.enemy) ||
+        (contact.BodyB.CategoryBitMask == (uint)GameObjects.player &&
+        contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy);
+
+      if (isPlayerAndEnemyContact)
+      {
+        SKPhysicsBody EnemyBody;
+        SKPhysicsBody PlayerBody;
+
+        if (contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy ||
+          contact.BodyA.CategoryBitMask == (uint)GameObjects.enemy)
+        {
+          EnemyBody = contact.BodyA;
+          PlayerBody = contact.BodyB;
+        }
+        else
+        {
+          EnemyBody = contact.BodyB;
+          PlayerBody = contact.BodyA;
+        }
+
+        var enemyObject = SceneGameUnits.Find(
+          (obj) => obj.ID.ToString() == EnemyBody.Node.Name);
+
+
+
+
+
+        if (enemyObject != null)
+        {
+          enemyObject.GetDamage(100);
+          Player.GetDamage(10);
+        }
+        else if (EnemyBody.Node == boss.Node)
+        {
+          boss.GetDamage(50);
+          Player.GetDamage(100);
+        }
+      }
+    }
+
+
     private void DestroyBullet(Bullet bullet)
     {
       bullet.Node.RemoveFromParent();
       BulletsInScene.Remove(bullet);
     }
+
 
     private void DestroyBonus(Bonus bonus)
     {
@@ -399,7 +447,7 @@ namespace SpaceGame
 
     private void GenerateBonusDelay()
     {
-      bonusDelay = GMath.GenerateRandomInRange(20000, 40000);
+      bonusDelay = GMath.GenerateRandomInRange(1000, 2000);
     }
 
 
