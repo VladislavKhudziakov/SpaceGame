@@ -21,7 +21,7 @@ namespace SpaceGame
       Mat3 transformation = rotationMatrix * translationMatrix;
 
       var moveAction = SKAction.MoveBy(
-        -(nfloat)transformation[6], (nfloat)transformation[7], 2.5);
+        -(nfloat)transformation[6], -(nfloat)transformation[7], 2.5);
 
       var doneAction = SKAction.RemoveFromParent();
 

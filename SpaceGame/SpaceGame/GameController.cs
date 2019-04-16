@@ -12,7 +12,7 @@ namespace SpaceGame
   {
     private readonly List<ushort> pressedKeys;
     private double lastTime;
-    private bool isBoss;
+    private Boss boss;
 
 
     public Player Player { get; set; }
@@ -26,12 +26,12 @@ namespace SpaceGame
 
     public GameController(SKScene scene)
     {
-      isBoss = false;
       Scene = scene;
       SceneGameUnits = new List<GameUnit>();
       BulletsInScene = new List<Bullet>();
       pressedKeys = new List<ushort>();
       Hud = new Hud(this);
+      boss = null;
 
       SceneUpdateDelegate = new UpdateDelegate(CheckBulletsForActions);
       SceneUpdateDelegate += CheckUnitsForActions;
@@ -133,8 +133,9 @@ namespace SpaceGame
       }
       else
       {
-        isBoss = true;
-        enemy = new Boss(this);
+        boss = new Boss(this);
+        enemy = boss;
+        SceneUpdateDelegate += boss.OnSceneUpdate;
       }
 
       if (enemy != null)
@@ -231,7 +232,7 @@ namespace SpaceGame
     {
       double now = new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
 
-      if (!isBoss)
+      if (boss == null)
       {
         if (now >= lastTime + spawnDelay)
         {

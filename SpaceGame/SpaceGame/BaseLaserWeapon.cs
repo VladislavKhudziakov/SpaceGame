@@ -11,9 +11,7 @@ namespace SpaceGame
 
     public override void ShootOnce()
     {
-      //CreateBullet(15);
       CreateBullet(0);
-      //CreateBullet(-15);
     }
 
 
@@ -36,7 +34,7 @@ namespace SpaceGame
 
       laserBeam.Node.Position = finalPoint;
 
-      owner.Node.Scene.AddChild(laserBeam.Node);
+      owner.Node.Scene?.AddChild(laserBeam.Node);
 
       owner.Controller.BulletsInScene.Add(laserBeam);
 
