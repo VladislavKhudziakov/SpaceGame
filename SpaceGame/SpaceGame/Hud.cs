@@ -31,7 +31,7 @@ namespace SpaceGame
 
       ScoreLabel = new SKLabelNode
       {
-        FontColor = NSColor.Black,
+        FontColor = NSColor.White,
         FontName = "Arial",
         FontSize = 20,
         Text = $"Score: {controller.PlayerScore}",

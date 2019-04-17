@@ -41,7 +41,7 @@ namespace SpaceGame
 
       Label = new SKLabelNode
       {
-        FontColor = NSColor.Black,
+        FontColor = NSColor.White,
         FontName = "Arial",
         FontSize = 20,
         Text = "txt",

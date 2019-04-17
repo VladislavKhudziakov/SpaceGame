@@ -10,10 +10,11 @@ namespace SpaceGame
   {
     public override void DidFinishLaunching(NSNotification notification)
     {
-      var scene = SKNode.FromFile<GameScene>("GameScene");
-
-      // Set the scale mode to scale to fit the window
-      scene.ScaleMode = SKSceneScaleMode.AspectFill;
+      var scene = new StartScene
+      {
+        ScaleMode = SKSceneScaleMode.ResizeFill,
+        BackgroundColor = NSColor.White
+      };
 
       MyGameView.PresentScene(scene);
 

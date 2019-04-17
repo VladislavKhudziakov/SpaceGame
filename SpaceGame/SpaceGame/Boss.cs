@@ -1,4 +1,5 @@
 ﻿using System;
+using AppKit;
 using CoreGraphics;
 using SpriteKit;
 
@@ -114,6 +115,16 @@ namespace SpaceGame
         Node.ZRotation = (nfloat)(-Math.Acos(angle) - Math.PI / 2);
       else
       Node.ZRotation = (nfloat)(Math.Acos(angle) - Math.PI / 2);
+    }
+
+
+    protected override void Destroy()
+    {
+      base.Destroy();
+      var scene = new EndScene(true);
+      scene.ScaleMode = SKSceneScaleMode.ResizeFill;
+      scene.BackgroundColor = NSColor.White;
+      Controller?.Scene?.View?.PresentScene(scene);
     }
 
 

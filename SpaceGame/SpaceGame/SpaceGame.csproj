@@ -79,6 +79,10 @@
     <BundleResource Include="heal.png" />
     <BundleResource Include="laser.png" />
     <BundleResource Include="shield.png" />
+    <BundleResource Include="bg.jpg" />
+    <BundleResource Include="heal2.png" />
+    <BundleResource Include="laser2.png" />
+    <BundleResource Include="shield2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -128,6 +132,8 @@
     <Compile Include="HealBonus.cs" />
     <Compile Include="ShieldsBonus.cs" />
     <Compile Include="WeaponBonus.cs" />
+    <Compile Include="StartScene.cs" />
+    <Compile Include="EndScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainMenu.xib" />

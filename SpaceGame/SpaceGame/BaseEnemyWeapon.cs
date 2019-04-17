@@ -16,7 +16,7 @@ namespace SpaceGame
       rotationMatrix.SetRotation(-owner.CurrentRotation);
 
       Mat3 translationMatrix = new Mat3();
-       translationMatrix.SetTranslation(owner.Node.Scene.Size.Width, 0);
+        translationMatrix.SetTranslation(owner.Node.Scene.Size.Width, 0);
 
       Mat3 transformation = rotationMatrix * translationMatrix;
 
@@ -24,7 +24,7 @@ namespace SpaceGame
         -(nfloat)transformation[6], -(nfloat)transformation[7], 2.5);
 
       var doneAction = SKAction.RemoveFromParent();
-
+  
       return SKAction.Sequence(moveAction, doneAction);
     }
 

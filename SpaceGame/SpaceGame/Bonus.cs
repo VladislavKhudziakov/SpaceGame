@@ -12,7 +12,6 @@ namespace SpaceGame
       : base(spriteImgName) 
     {
       this.controller = controller;
-      _node.SetScale(0.125f / 4);
       _node.PhysicsBody = SKPhysicsBody.CreateRectangularBody(_node.Size);
       _node.PhysicsBody.CategoryBitMask = (uint)GameObjects.bonus;
       _node.PhysicsBody.ContactTestBitMask = (uint)GameObjects.playerBullet;

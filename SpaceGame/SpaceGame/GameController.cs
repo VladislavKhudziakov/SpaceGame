@@ -124,19 +124,19 @@ namespace SpaceGame
     {
       Enemy enemy = null;
 
-      if (PlayerScore <= 5)
+      if (PlayerScore <= 50)
       {
         enemy = new Lvl1Enemy(this);
       }
-      else if (PlayerScore <= 10)
+      else if (PlayerScore <= 100)
       {
         enemy = new Lvl2Enemy(this);
       }
-      else if (PlayerScore <= 15)
+      else if (PlayerScore <= 150)
       {
         enemy = new Lvl3Enemy(this);
       }
-      else if (PlayerScore <= 20)
+      else if (PlayerScore <= 200)
       {
         enemy = new Lvl4Enemy(this);
       }
@@ -281,11 +281,7 @@ namespace SpaceGame
 
         var enemyObject = SceneGameUnits.Find(
           (obj) => obj.ID.ToString() == EnemyBody.Node.Name);
-
-
-
-
-
+          
         if (enemyObject != null)
         {
           enemyObject.GetDamage(100);
@@ -447,7 +443,7 @@ namespace SpaceGame
 
     private void GenerateBonusDelay()
     {
-      bonusDelay = GMath.GenerateRandomInRange(1000, 2000);
+      bonusDelay = GMath.GenerateRandomInRange(10000, 40000);
     }
 
 

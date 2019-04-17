@@ -3,7 +3,7 @@
   public class WeaponBonus : Bonus
   {
     public WeaponBonus(GameController controller)
-      : base("laser.png", controller) 
+      : base("laser2.png", controller) 
       {
         _node.SetScale(0.125f/ 2);
       }

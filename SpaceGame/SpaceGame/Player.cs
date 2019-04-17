@@ -1,5 +1,7 @@
 ﻿using System;
 using CoreGraphics;
+using AppKit;
+using SpriteKit;
 
 namespace SpaceGame
 {
@@ -59,6 +61,16 @@ namespace SpaceGame
     {
       currWeaponLvl = currWeaponLvl >= 3 ? 3 : currWeaponLvl + 1;
       UpdateWeapon();
+    }
+
+
+    protected override void Destroy()
+    {
+      base.Destroy();
+      var scene = new EndScene(false);
+      scene.ScaleMode = SKSceneScaleMode.ResizeFill;
+      scene.BackgroundColor = NSColor.White;
+     Controller.Scene.View.PresentScene(scene);
     }
 
 
